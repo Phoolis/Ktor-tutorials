@@ -1,0 +1,24 @@
+### GET all tasks
+GET http://0.0.0.0:8080/tasks
+Accept: application/json
+
+### GET tasks by priority
+GET http://0.0.0.0:8080/tasks/byPriority/High
+Accept: application/json
+
+### GET task by name
+GET http://0.0.0.0:8080/tasks/byName/cleaning
+Accept: application/json
+
+### POST a new task
+POST http://0.0.0.0:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "cooking",
+  "description": "Cook the dinner",
+  "priority": "High"
+}
+
+### DELETE task
+DELETE http://0.0.0.0:8080/tasks/gardening
