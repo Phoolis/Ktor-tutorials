@@ -18,7 +18,7 @@ class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
         application {
-            module()
+            module() // The whole module is loaded here
         }
         client.get("/").apply {
             assertEquals(HttpStatusCode.OK, status)
@@ -28,6 +28,7 @@ class ApplicationTest {
     @Test
     fun tasksCanBeFoundByPriority() = testApplication {
         application {
+            // Only selected modules are being loaded here
             val repository = FakeTaskRepository()
             configureSerialization(repository)
             configureRouting()

@@ -1,23 +1,28 @@
 package com.example
 
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.Database
 import java.sql.Connection
 import java.sql.DriverManager
-import org.jetbrains.exposed.sql.*
 
-fun Application.configureDatabases() {
+fun Application.configureDatabases(env: ApplicationEnvironment) {
+    // First try environment variables, then fallback to the config file
+    val url = System.getenv("DB_URL")
+        ?: env.config.propertyOrNull("storage.jdbcURL")?.getString()
+        ?: return  // skip DB if not configured (useful for tests)
+
+    val user = System.getenv("DB_USER")
+        ?: env.config.propertyOrNull("storage.user")?.getString()
+        ?: "postgres" // optional default
+
+    val password = System.getenv("DB_PASSWORD")
+        ?: env.config.propertyOrNull("storage.password")?.getString()
+        ?: "postgres" // optional default
+
     Database.connect(
-        "jdbc:postgresql://localhost:5432/ktor_tutorial_db",
-        user = "postgres",
-        password = "postgres"
+        url,
+        user = user,
+        password = password
     )
 }
 

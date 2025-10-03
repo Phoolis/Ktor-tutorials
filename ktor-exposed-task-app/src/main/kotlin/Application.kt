@@ -11,6 +11,6 @@ fun Application.module() {
     val repository = PostgresTaskRepository()
 
     configureSerialization(repository)
-    configureDatabases()
+    configureDatabases(environment) // Load the whole environment, not just the config file.
     configureRouting()
 }
